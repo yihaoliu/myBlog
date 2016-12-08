@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="script/react.min.js" charset="utf-8"></script>
+  <script src="script/react-dom.min.js" charset="utf-8"></script>
+  <script src="script/browser.min.js" charset="utf-8"></script>
+  <title>Document</title>
+</head>
+<body>
+  <div id="example"></div>
+
+</body>
+<script type="text/babel">
+var title=123;
+  var Mytitle=React.createClass({
+    propTypes:{
+      title:React.PropTypes.string.isRequired,
+    },
+    render:function () {
+      return <h1>hello{this.props.title}</h1>
+    }
+  });
+  ReactDOM.render(
+    <Mytitle title={title}/>,
+    document.getElementById('example')
+  )
+</script>
+</html>

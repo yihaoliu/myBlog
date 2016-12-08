@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="script/react.min.js" charset="utf-8"></script>
+  <script src="script/react-dom.min.js" charset="utf-8"></script>
+  <script src="script/browser.min.js" charset="utf-8"></script>
+</head>
+<body>
+  <div id="extend"></div>
+
+</body>
+<script type="text/babel">
+var h1Style={
+  backgroundColor:"red"
+}
+var h2Style={
+  fontSize:"50"
+}
+var h3Style={
+  color:"red"
+}
+for()
+var arr=[
+  <h1>数组元素一</h1>,
+  <h1>数组元素二</h1>
+]
+console.log(typeof arr[0]);
+/*
+jsx中js部分注释
+ */
+ReactDOM.render(
+  <div>
+  <h1 style={h1Style}>h1:hello</h1>
+  <h2 style={h2Style}>h2:{1+1}</h2>
+  {/*jsx中html部分的注释*/}
+  <h3 style={h3Style}>h3:{1>2?"true":"false"}</h3>
+  {arr}
+  </div>
+,
+document.getElementById("extend"));
+
+</script>
+</html>

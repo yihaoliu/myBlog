@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="script/react.min.js" charset="utf-8"></script>
+  <script src="script/react-dom.min.js" charset="utf-8"></script>
+  <script src="script/browser.min.js" charset="utf-8"></script>
+  <title>Document</title>
+</head>
+<body>
+  <div id="example"></div>
+
+</body>
+<script type="text/babel">
+  var Content =React.createClass({
+    getInitialState:function(){
+      return {isPopuShow:false};
+    },
+    handleClick:function () {
+      this.setState({isPopuShow:true})
+    },
+    closePopu:function(){
+      this.setState({isPopuShow:false})
+    }
+    ,
+    render:function () {
+      return (
+        <div>
+          <Button onClick={this.handleClick} openBtnText={this.props.openBtnText}/>
+          <Popu
+                  isPopuShow={this.state.isPopuShow}
+                  onClick={this.closePopu}
+                  popusTitle={this.props.popusTitle}
+                  closeBtnText={this.props.closeBtnText}
+                  popuContent={this.props.popuContent}
+          />
+        </div>
+      )
+    }
+  });
+
+
+  var Button=React.createClass({
+    render:function () {
+      return (
+        <button onClick={this.props.onClick} >{this.props.openBtnText}</button>
+      )
+    }
+
+  });
+  var Popu=React.createClass({
+    render:function () {
+      var isok=this.props.isPopuShow?"block":"none";
+    var popuStyle={
+          position:'fixed',
+          background:"blue",
+          width:'80%',
+          height:'80%',
+          marginLeft:'10%',
+          marginTop:'0%',
+          display:isok
+      };
+      return (
+        <div style={popuStyle}>
+          <h1>{this.props.popusTitle}</h1>
+          <div>{this.props.popuContent}</div>
+          <button onClick={this.props.onClick}>{this.props.closeBtnText}</button>
+        </div>
+      );
+    }
+  })
+
+  var str=<div>
+            <h1>hello</h1>
+            <p><span>姓名:</span><input type="text"/></p>
+          </div>
+  ReactDOM.render(
+    <Content
+              openBtnText="查看"
+              popusTitle="查看36氪"
+              closeBtnText="取消"
+              popuContent={str}
+              />,
+    document.getElementById('example')
+  )
+</script>
+</html>

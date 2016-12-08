@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="script/react.min.js" charset="utf-8"></script>
+  <script src="script/react-dom.min.js" charset="utf-8"></script>
+  <script src="script/browser.min.js" charset="utf-8"></script>
+  <title>Document</title>
+</head>
+<style media="screen">
+  .ui-groupMould:hover{
+    background: #f5f5f5;
+  }
+</style>
+<body>
+  <div id="example"></div>
+
+</body>
+<script type="text/babel">
+var data=[1,2,3,4,5];
+/**
+ * 左右框内内容调换组件
+ * @type {[type]}
+ */
+var i=0;
+var SplitGroup=React.createClass({
+  getInitialState:function(){
+    return {
+
+        allData:this.props.allData,
+        okData:this.props.okData,
+
+    }
+  },
+  rightAdd:function(value){
+    var arr=this.state.okData;
+    arr.push(value);
+    this.setState({okData:arr});
+  },
+  leftAdd:function(value){
+    var arr=this.state.allData;
+    console.log(arr)
+    arr.push(value);
+    this.setState({allData:arr});
+  },
+  render:function(){
+
+    var moddleStyle={
+      display:"inline-block",
+      width:"40px",
+      height:"250px",
+      verticalAlign:"middle",
+    }
+
+    return (
+      <div>
+          <ZhuanHuan  iconShow="false"
+                      Data={this.state.allData}
+                      addOther={this.rightAdd}
+
+          />
+          <div style={moddleStyle}>
+            243
+          </div>
+          <ZhuanHuan  iconShow="true"
+                      Data={this.state.okData}
+                      addOther={this.leftAdd}
+                      />
+      </div>
+    );
+
+  }
+})
+
+
+
+var ZhuanHuan=React.createClass({
+  getInitialState:function(){
+    return {mouldSort:this.props.Data};
+  },
+  swapItems : function(arr, index1, index2) {
+       arr[index1] = arr.splice(index2, 1, arr[index1])[0];
+       this.setState({mouldSort:arr});
+   },
+   //上移
+  upMove:function(index,event){
+    if(index==0){
+      return;
+    }
+     this.swapItems(this.state.mouldSort, index, index- 1);
+     console.log(React.SyntheticEvent);
+
+
+  },
+  //下移
+  downMove:function(index,event){
+    if(index == this.state.mouldSort.length -1) {
+           return;
+       }
+
+    this.state.mouldSort=this.swapItems(this.state.mouldSort, index, index + 1);
+
+  },
+  upArrow:function(index){
+    return index>0?true:false;
+  },
+  downArrow:function(index){
+    return index<this.state.mouldSort.length-1?true:false;
+  },
+  //点击删除
+  removeMould:function(arr,index){
+
+    var remove=arr.splice(index,1)[0];
+    this.setState({mouldSort:arr});
+    this.props.addOther(remove);
+  },
+
+  render:function(event){
+    var _this=this;
+    var boxStyle={
+      border:"1px solid #dfdfdf",
+      width:"252px",
+      height:"250px",
+      display:'inline-block',
+      overflow:"auto"
+    }
+    var arr=this.state.mouldSort.map(function(item,index){
+      var j=index;
+
+      return <Krmould
+                        upMoves={
+
+                          function(event,index){
+
+                             _this.upMove(j);
+                             event.stopPropagation();
+
+
+                           }
+                        }
+                        
+
+                        downMove={_this.downMove}
+
+
+                        downMove={
+                          function(event,index){
+
+                             _this.downMove(j);
+
+                             event.stopPropagation();
+
+                           }
+                        }
+                        iconShow={_this.props.iconShow}
+                        upShow={_this.upArrow(index)}
+                        downShow={_this.downArrow(index)}
+                        text={item}
+                        onClick={_this.removeMould.bind(this,_this.state.mouldSort,index)}
+                        />
+    })
+
+
+    return (
+      <div style={boxStyle}>
+          {arr}
+      </div>
+
+    )
+  }
+})
+
+
+
+
+ /**
+  * 模板条组件
+  * @return {[type]} [description]
+  */
+  var Krmould=React.createClass({
+    render:function(){
+      var upShow,downShow;
+
+
+      if(this.props.iconShow=="false"){
+        upShow="hidden";
+        downShow="hidden";
+      }
+      if (this.props.iconShow=="true") {
+        upShow=this.props.upShow==true?"visible":"hidden";
+        downShow=this.props.downShow==true?"visible":"hidden";
+      }
+      var contentStyle={
+          width:"100%",
+          height:"26px",
+          lineHeight:"26px",
+          paddingLeft:"10px",
+          cursor:"pointer",
+          fontSize:"14px",
+          color:"#666666",
+          boxSizing:"border-box",
+      }
+      //上移箭头的样式
+      var upStyle={
+        display:"inline-block",
+        cursor:"pointer",
+        float:"right",
+        marginRight:"30px",
+        visibility:upShow
+      }
+      //下移箭头的样式
+      var downShow={
+        cursor:"pointer",
+        float:"right",
+        marginRight:"30px",
+
+        visibility:downShow
+      }
+
+      return(
+        <div className="ui-groupMould " style={contentStyle} onClick={this.props.onClick}>
+          <span >{this.props.text}</span>
+          <span onClick={this.props.downMove} style={downShow}>下</span>
+          <span onClick={this.props.upMoves} style={upStyle}>上</span>
+
+        </div>)
+    }
+
+  })
+
+
+  ReactDOM.render(
+    <SplitGroup allData={data} okData={[6,7,8,9,10]}/>,
+    document.getElementById('example')
+  )
+</script>
+</html>
+
+
+
+  <span className="moveRight" onClick={this.leftToAll}></span><br/>
+<span className="moveLeft" onClick={this.rightToAll}></span>
+
+
+.moveRight{
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  background: url(images/rightno.svg) no-repeat;
+  background-position: center center;
+  background-size: cover;
+  cursor: pointer;
+
+
+}
+.moveRight:hover{
+  background: url(images/right.svg) no-repeat;
+
+}
+.moveLeft:hover{
+  background: url(images/left.svg) no-repeat;
+
+}
+.moveLeft{
+  display:inline-block;
+  margin-top: 10px;
+  width: 16px;
+  height: 16px;
+  background: url(images/leftno.svg) no-repeat;
+  background-position: center center;
+  background-size: cover;
+  cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
