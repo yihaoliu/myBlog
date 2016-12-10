@@ -132,6 +132,7 @@ html:
 js:
 angular.element("#testID2").find(".test2").remove("test3");
 
+
 (*在angular里如何判断ng-repeat渲染完这是一个坑)
 例子:
 HTML:
@@ -164,3 +165,6 @@ app.directive('repeatFinish',function(){
         }
     }
 })
+
+(*dom节点的的选取,要注意选取的位置)
+
