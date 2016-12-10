@@ -131,4 +131,36 @@ html:
 
 js:
 angular.element("#testID2").find(".test2").remove("test3");
-(*dom节点的的选取,要注意选取的位置)
+
+(*在angular里如何判断ng-repeat渲染完这是一个坑)
+例子:
+HTML:
+<div id="box">
+    <span ng-repeat="item in data" repeat-finish>{{item.str}}</span>
+</div>
+//要循环的数据
+js数据：
+$scope.data = [
+    {
+        str: 'a'
+    },
+    {
+        str: 'b'
+    },
+    {
+        str: 'c'
+    }
+]
+
+js 自定义指令:
+//自定义指令repeatFinish
+app.directive('repeatFinish',function(){
+    return {
+        link: function(scope,element,attr){
+            // console.log(scope.$index)
+            if(scope.$last == true){//这句话判断节点是否渲染玩了
+                console.log('ng-repeat执行完毕')
+            }
+        }
+    }
+})
