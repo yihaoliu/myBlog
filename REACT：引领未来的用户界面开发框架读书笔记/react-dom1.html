@@ -14,13 +14,31 @@
 
 </body>
 <script type="text/babel">
+  var value="";
   var MyComponent=React.createClass({
+    handleChange:function(event){
+      value=event.target.value;
+      console.log(event.target.value);
+    },
     render:function () {
-      return <h1>hello{this.props.name}</h1>
-    }
+    	 
+      return (
+        <div>
+          <input ref="input" type="text" onChange={this.handleChange}/>
+          <h1>hello{value}</h1>
+        </div>)
+
+    },
+    componentDidMount:function(){
+	if(this.props.autoFocus){
+		console.log(this.refs.input.focus(),"=====")
+		
+	}
+
+	}
   });
   ReactDOM.render(
-    <MyComponent name="kr-Space"/>,
+    <MyComponent autoFocus={false}/>,
     document.getElementById('example')
   )
 </script>

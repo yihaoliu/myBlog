@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="script/react.min.js" charset="utf-8"></script>
+  <script src="script/react-dom.min.js" charset="utf-8"></script>
+  <script src="script/browser.min.js" charset="utf-8"></script>
+  <title>Document</title>
+</head>
+<body>
+  <div id="example"></div>
+
+</body>
+<script type="text/babel">
+  var data=["你好1","你好2","你好3","你好4","你好5","你好6"]
+
+  var SelectText=React.createClass({
+    getInitialState:function(){
+      return {
+        value:"",
+        data:this.props.data,
+        optionShow:false,
+
+      }
+    },
+    filterData:function(event){
+      var keyWord=event.target.value;
+      var arr=this.props.data;
+
+
+      if (keyWord) {
+        var all=this.seek(keyWord,arr);
+        if (all.length==0) {
+          all.push(this.props.noText)
+        }
+        this.setState({data:all});
+
+      }else {
+        this.setState({data:this.props.data})
+
+      }
+      this.setState({value:keyWord})
+    },
+    seek:function(value,arr){
+        var n=[];
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i].indexOf(value)!=-1) {
+            n.push(arr[i]);
+          }
+        };
+        return n;
+    },
+    handleFocus:function(){
+        this.setState({optionShow:true})
+    },
+    handleBlue:function(){
+      this.setState({optionShow:false})
+
+    },
+    changeValue:function(values){
+      this.setState({value:values});
+    },
+    render:function () {
+      return (
+      <div>
+      	<input type="text" value={this.state.value} onChange={this.filterData} onFocus={this.handleFocus} />
+      	<Option data={this.state.data} show={this.state.optionShow} changeValue={this.changeValue} Click={this.handleBlue} noText={this.props.noText} />
+      </div>
+      )
+    }
+  });
+
+
+
+  var Option=React.createClass({
+      getInitialState:function(){
+        return {
+          data:this.props.data
+        }
+      },
+      handleClick:function(index){
+        if(this.props.data[index]==this.props.noText){
+            return ;
+        }
+        this.props.changeValue(this.props.data[index]);
+        this.props.Click.bind(this)();
+      },
+    	render:function(){
+
+        var _this=this,styles={};
+    		var data=this.props.data;
+    		var arr=data.map(function(item,index){
+    	        var j=index;
+    	        return <Text value={data[index]}
+                           onClick={
+                              function(event,index){
+                                console.log(j);
+
+                                 _this.handleClick(j);
+                                 event.stopPropagation();
+                               }
+                            }
+
+              />
+            })
+       if (!this.props.show) {
+          styles={
+            display:"none"
+          }
+       }else {
+         styles={
+           display:"block"
+         }
+       }
+            return (
+    		    	<div style={styles}>{arr}</div>
+            )
+	    }
+  });
+
+  var Text=React.createClass({
+    render:function(){
+      return <p className="ui-text" onClick={this.props.onClick}>{this.props.value}</p>
+    }
+  })
+
+  ReactDOM.render(
+    <SelectText data={data} noText="没有符合条件的搜索"/>,
+    document.getElementById('example')
+  )
+</script>
+</html>
